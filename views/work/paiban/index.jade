@@ -12,14 +12,31 @@ html
         //- p #{date}
         div.header
             h1 寒假值班排班系统
-        form(role='form', method='POST', action='/work/paiban')
-            div.form-group
-                input(type="text", class='form-control input-lg',name="name", id="name", placeholder="请输入您的姓名")
-            div.form-group
-                input(type="text", class='form-control input-lg',name="tel", id="tel", placeholder="请输入您的电话")
-            div.form-group
-                select.form-control.input-lg(name="date")
-                    option(value=-1) 请选择值班日期
-                    -for (var i = 0; i < date.length; i++)
-                        option(value="#{i}") #{date[i].date}
-            button(type="submit", class='btn-lg btn-block btn-primary') 提交
+        div.form-group
+            input(type="text", class='form-control input-lg', id="name", placeholder="请输入您的姓名")
+        div.form-group
+            input(type="text", class='form-control input-lg', id="tel", placeholder="请输入您的电话")
+        div.form-group
+            select#date.form-control.input-lg(name="date")
+                option(value=-1) 请选择值班日期
+                -for (var i = 0; i < date.length; i++)
+                    option(value="#{date[i].id}") #{date[i].date}
+        button(id="submit", class='btn-lg btn-block btn-primary') 提交
+    script.
+        $("#submit").click(function() {
+            $.ajax({
+                url: '/work/paiban',
+                type: 'POST',
+                data: {
+                    name: $("#name").val(),
+                    tel: $("#tel").val(),
+                    date: $("#date").val(),
+                },
+                success: function(data) {
+                    alert(data.info);
+                    if(data.status == 1) {
+                        window.location.href = "/work/paiban/result";
+                    }
+                }
+            });
+        })

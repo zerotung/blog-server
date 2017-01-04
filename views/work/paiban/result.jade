@@ -1,0 +1,26 @@
+doctype html
+html
+  head
+    title 排班
+    link(rel='stylesheet', href='/stylesheets/styles.min.css')
+    meta(charset="UTF-8")
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    script(src="/javascripts/scripts.min.js")
+  body
+    div.container
+        //- p #{date}
+        div.header
+            h1 寒假值班排班结果
+        table.table.table-striped
+            thead
+                tr
+                    th 日期
+                    th 姓名
+                    th 电话
+            tbody
+                -for (var i = 0; i < date.length; i++)
+                    tr
+                        th #{date[i].date}
+                        th #{date[i].name}
+                        th #{date[i].tel}

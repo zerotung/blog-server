@@ -13,16 +13,28 @@ router.get('/paiban', function(req, res, next) {
 
     fs.readFile('./data/paiban.json', (err, data) => {
         if (err) {
-            return res.send({
-                status: 0,
-                info: '读取文件失败'
+            return res.render('error', {
+                message: '读取文件失败',
+                error: {
+                    status: 0,
+                    stack: '请联系管理员解决'
+                }
             });
         }
 
         date = JSON.parse(data.toString());
+        let emptyDate = [];
+
+        emptyDate = date.filter(x => {
+            if (x.name != '') {
+                return false;
+            } else {
+                return true;
+            }
+        });
 
         res.render('work/paiban/index', {
-            date: date
+            date: emptyDate
         });
     });
 });
@@ -76,7 +88,11 @@ router.post('/paiban', function(req, res, next) {
 
                 return res.send({
                     status: 1,
-                    info: '提交成功'
+                    info: {
+                        date: date,
+                        name: name,
+                        tel: tel
+                    }
                 });
             });
 
@@ -88,5 +104,25 @@ router.post('/paiban', function(req, res, next) {
         }
     })
 })
+
+router.get('/paiban/result', function(req, res, next) {
+
+    let date = [];
+
+    fs.readFile('./data/paiban.json', (err, data) => {
+        if (err) {
+            return res.send({
+                status: 0,
+                info: '读取文件失败'
+            });
+        }
+
+        date = JSON.parse(data.toString());
+
+        res.render('work/paiban/result', {
+            date: date
+        });
+    });
+});
 
 module.exports = router;

@@ -1,1 +1,30 @@
-delete.jade
+doctype html
+html
+  head
+    title 排班
+    link(rel='stylesheet', href='/stylesheets/styles.min.css')
+    meta(charset="UTF-8")
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    script(src="/javascripts/scripts.min.js")
+  body
+    div.container
+        //- p #{date}
+        div.header
+            h1 寒假值班排班清空
+        button#submit.btn.btn-danger.btn-block 立即清空当前排版信息
+        span.help-block 点击上方按钮将清空当前全部排版信息，并且无法找回，确定好后再点击。
+
+    script.
+        $("#submit").click(function() {
+            $.ajax({
+                url: '/work/paiban/delete',
+                type: 'DELETE',
+                success: function(data) {
+                    alert(data.info);
+                    if(data.status == 1) {
+                        window.location.href = "/work/paiban/result";
+                    }
+                }
+            })
+        });

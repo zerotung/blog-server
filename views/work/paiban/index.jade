@@ -33,9 +33,13 @@ html
                     date: $("#date").val(),
                 },
                 success: function(data) {
-                    alert(data.info);
+
                     if(data.status == 1) {
+                        var string = "你的名字：" + data.info.name + "\n你的电话是：" + data.info.tel + "\n你选了" + data.info.date;
+                        alert(string);
                         window.location.href = "/work/paiban/result";
+                    } else {
+                        alert(data.info);
                     }
                 }
             });

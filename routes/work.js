@@ -125,4 +125,52 @@ router.get('/paiban/result', function(req, res, next) {
     });
 });
 
+router.get('/paiban/delete', function(req, res, next) {
+
+    res.render('work/paiban/delete', {});
+});
+
+router.delete('/paiban/delete', function(req, res, next) {
+
+    fs.readFile('./data/paiban.json', (err, data) => {
+        if (err) {
+            return res.render('error', {
+                message: '读取文件失败',
+                error: {
+                    status: 0,
+                    stack: '请联系管理员解决'
+                }
+            });
+        }
+
+        date = JSON.parse(data.toString());
+
+        date.map(x => {
+            x.name = '';
+            x.tel = '';
+        });
+
+        dataString = JSON.stringify(date);
+
+        fs.writeFile('./data/paiban.json', dataString, err => {
+            if (err) {
+                return res.render('error', {
+                    message: '写入文件失败',
+                    error: {
+                        status: 0,
+                        stack: '请联系管理员解决'
+                    }
+                })
+            }
+
+            res.send({
+                status: 1,
+                info: '已成功清空'
+            });
+        })
+
+    });
+});
+
+
 module.exports = router;
